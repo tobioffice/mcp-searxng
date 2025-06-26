@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "searxng": {
+      "command": "npx",
+      "args": ["@tobioffice/mcp-searxng"],
+      "env": {
+        "SEARXNG_URL": "http://localhost:8080",
+        "AUTH_USERNAME": "your_username",
+        "AUTH_PASSWORD": "your_password"
+      }
+    }
+  }
+}
