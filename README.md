@@ -4,7 +4,6 @@ An [MCP server](https://modelcontextprotocol.io/introduction) implementation tha
 
 <a href="https://glama.ai/mcp/servers/0j7jjyt7m9"><img width="380" height="200" src="https://glama.ai/mcp/servers/0j7jjyt7m9/badge" alt="SearXNG Server MCP server" /></a>
 
-[![smithery badge](https://smithery.ai/badge/@ihor-sokoliuk/server-searxng)](https://smithery.ai/server/@ihor-sokoliuk/server-searxng)
 
 ## Features
 
@@ -47,13 +46,6 @@ If you are using a password protected SearxNG instance you can set a username an
 
 ### Usage with Claude Desktop
 
-### Installing via Smithery
-
-To install SearxNG Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@ihor-sokoliuk/server-searxng):
-
-```bash
-npx -y @smithery/cli install @ihor-sokoliuk/server-searxng --client claude
-```
 
 ### [NPX](https://www.npmjs.com/package/mcp-searxng)
 
