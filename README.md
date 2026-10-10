@@ -83,41 +83,6 @@ npm install -g @tobioffice/mcp-searxng
 }
 ```
 
-### Docker
-
-Pre-built image:
-
-```bash
-docker pull isokoliuk/mcp-searxng:latest
-```
-
-```json
-{
-  "mcpServers": {
-    "searxng": {
-      "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--rm",
-        "-e",
-        "SEARXNG_URL",
-        "isokoliuk/mcp-searxng:latest"
-      ],
-      "env": {
-        "SEARXNG_URL": "YOUR_SEARXNG_INSTANCE_URL"
-      }
-    }
-  }
-}
-```
-
-Build the image locally:
-
-```bash
-docker build -t mcp-searxng:latest -f Dockerfile .
-```
-
 ### From source
 
 ```bash
@@ -137,10 +102,6 @@ pnpm install
 pnpm run build   # compile TypeScript to dist/
 pnpm run watch   # compile in watch mode
 ```
-
-## Acknowledgments
-
-This project is based on [ihor-sokoliuk/mcp-searxng](https://github.com/ihor-sokoliuk/mcp-searxng), originally created by Ihor Sokoliuk.
 
 ## License
 
