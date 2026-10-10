@@ -1,61 +1,61 @@
 # SearXNG MCP Server
 
-An [MCP server](https://modelcontextprotocol.io/introduction) implementation that integrates the [SearXNG](https://docs.searxng.org) API, providing web search capabilities.
+[![npm](https://img.shields.io/npm/v/@tobioffice/mcp-searxng.svg)](https://www.npmjs.com/package/@tobioffice/mcp-searxng)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![MCP](https://img.shields.io/badge/MCP-compatible-6E56CF)](https://modelcontextprotocol.io)
 
+A [Model Context Protocol](https://modelcontextprotocol.io) server that integrates the [SearXNG](https://docs.searxng.org) API, giving any MCP client private web search and URL-to-Markdown reading through your own meta-search instance.
 
 ## Features
 
-- **Web Search**: General queries, news, articles, with pagination.
-- **Pagination**: Control which page of results to retrieve.
-- **Time Filtering**: Filter results by time range (day, month, year).
-- **Language Selection**: Filter results by preferred language.
-- **Safe Search**: Control content filtering level for search results.
+- **Web search** against any SearXNG instance - no third-party search API keys
+- **Pagination** with page selection
+- **Filters**: time range (day/month/year), language, and safe search
+- **URL reader**: fetch any URL and convert it to Markdown
+- **Authentication**: optional HTTP Basic Auth for protected instances
 
 ## Tools
 
-- **searxng_web_search**
-  - Execute web searches with pagination
-  - Inputs:
-    - `query` (string): The search query. This string is passed to external search services.
-    - `pageno` (number, optional): Search page number, starts at 1 (default 1)
-    - `time_range` (string, optional): Filter results by time range - one of: "day", "month", "year" (default: none)
-    - `language` (string, optional): Language code for results (e.g., "en", "fr", "de") or "all" (default: "all")
-    - `safesearch` (number, optional): Safe search filter level (0: None, 1: Moderate, 2: Strict) (default: instance setting)
+### `searxng_web_search`
 
-- **web_url_read**
-  - Read and convert the content from a URL to markdown
-  - Inputs:
-    - `url` (string): The URL to fetch and process
+Performs a web search and returns titles, descriptions and URLs.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `query` | string | yes | The search query |
+| `pageno` | number | no | Search page number, starts at 1 (default `1`) |
+| `time_range` | string | no | One of `day`, `month`, `year` |
+| `language` | string | no | Language code (e.g. `en`, `fr`, `de`) or `all` (default `all`) |
+| `safesearch` | string | no | `0` none, `1` moderate, `2` strict (default `0`) |
+
+### `web_url_read`
+
+Fetches a URL and converts the HTML content to Markdown.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `url` | string | yes | The URL to fetch and process |
 
 ## Configuration
 
-### Setting the SEARXNG_URL
+| Environment variable | Default | Description |
+| --- | --- | --- |
+| `SEARXNG_URL` | `http://localhost:8080` | Base URL of your SearXNG instance |
+| `AUTH_USERNAME` | - | Username for HTTP Basic Auth (optional) |
+| `AUTH_PASSWORD` | - | Password for HTTP Basic Auth (optional) |
 
-1. Choose a SearxNG instance from the [list of public instances](https://searx.space/) or use your local environment.
-2. Set the `SEARXNG_URL` environment variable to the instance URL.
-3. The default `SEARXNG_URL` value is `http://localhost:8080`.
+Choose a public instance from [searx.space](https://searx.space/) or run your own.
 
-### Using Authentication
+## Installation
 
-If you are using a password protected SearxNG instance you can set a username and password for HTTP Basic Auth:
-
-- Set the `AUTH_USERNAME` environmental variable to your username
-- Set the `AUTH_PASSWORD` environmental variable to your password
-
-### Usage with Claude Desktop
-
-
-### [NPX](https://www.npmjs.com/package/mcp-searxng)
+### npx
 
 ```json
 {
   "mcpServers": {
     "searxng": {
       "command": "npx",
-      "args": [
-        "-y",
-        "mcp-searxng"
-      ],
+      "args": ["-y", "@tobioffice/mcp-searxng"],
       "env": {
         "SEARXNG_URL": "YOUR_SEARXNG_INSTANCE_URL"
       }
@@ -64,19 +64,17 @@ If you are using a password protected SearxNG instance you can set a username an
 }
 ```
 
-### [NPM](https://www.npmjs.com/package/mcp-searxng)
+### npm global install
 
 ```bash
-npm install -g mcp-searxng
+npm install -g @tobioffice/mcp-searxng
 ```
-
-And then in your MCP config file:
 
 ```json
 {
   "mcpServers": {
     "searxng": {
-      "command": "mcp-searxng",
+      "command": "tobioffice-mcp-searxng",
       "env": {
         "SEARXNG_URL": "YOUR_SEARXNG_INSTANCE_URL"
       }
@@ -87,13 +85,11 @@ And then in your MCP config file:
 
 ### Docker
 
-#### Using [Pre-built Image from Docker Hub](https://hub.docker.com/r/isokoliuk/mcp-searxng)
+Pre-built image:
 
 ```bash
 docker pull isokoliuk/mcp-searxng:latest
 ```
-
-Add this to your `claude_desktop_config.json`:
 
 ```json
 {
@@ -116,38 +112,36 @@ Add this to your `claude_desktop_config.json`:
 }
 ```
 
-#### Build Locally
+Build the image locally:
 
 ```bash
 docker build -t mcp-searxng:latest -f Dockerfile .
 ```
 
-#### Use
+### From source
 
-Add this to your `claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "searxng": {
-      "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--rm",
-        "-e",
-        "SEARXNG_URL",
-        "mcp-searxng:latest"
-      ],
-      "env": {
-        "SEARXNG_URL": "YOUR_SEARXNG_INSTANCE_URL"
-      }
-    }
-  }
-}
+```bash
+git clone https://github.com/tobioffice/mcp-searxng.git
+cd mcp-searxng
+pnpm install
+pnpm run build
+node dist/index.js
 ```
 
+Ready-to-copy client configs are included in [`claude_desktop_config_example.json`](claude_desktop_config_example.json) and [`claude_desktop_config_with_auth.json`](claude_desktop_config_with_auth.json).
+
+## Development
+
+```bash
+pnpm install
+pnpm run build   # compile TypeScript to dist/
+pnpm run watch   # compile in watch mode
+```
+
+## Acknowledgments
+
+This project is based on [ihor-sokoliuk/mcp-searxng](https://github.com/ihor-sokoliuk/mcp-searxng), originally created by Ihor Sokoliuk.
 
 ## License
 
-This MCP server is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.
+MIT - see [LICENSE](LICENSE).
