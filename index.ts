@@ -73,7 +73,7 @@ const READ_URL_TOOL: Tool = {
 // Server implementation
 const server = new Server(
   {
-    name: "ihor-sokoliuk/mcp-searxng",
+    name: "tobioffice/mcp-searxng",
     version: packageVersion,
   },
   {
